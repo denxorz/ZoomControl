@@ -1,1 +1,1 @@
-nuget.exe pack ZoomControl/ZoomControl.csproj -properties Configuration=Release -build -outputdirectory .build -verbosity detailed -basepath .build\AnyCPU\Release
+nuget.exe pack ZoomControl/ZoomControl.csproj -properties Configuration=Release;SolutionDir=%CD% -build -outputdirectory .build -verbosity detailed
