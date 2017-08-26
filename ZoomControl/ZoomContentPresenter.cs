@@ -9,19 +9,20 @@ namespace Denxorz.ZoomControl
 
         public event ContentSizeChangedHandler ContentSizeChanged;
 
-        private Size _contentSize;
+        private Size contentSize;
 
         public Size ContentSize
         {
-            get { return _contentSize; }
+            get => contentSize;
             private set
             {
-                if (value == _contentSize)
+                if (value == contentSize)
+                {
                     return;
+                }
 
-                _contentSize = value;
-                if (ContentSizeChanged != null)
-                    ContentSizeChanged(this, _contentSize);
+                contentSize = value;
+                ContentSizeChanged?.Invoke(this, contentSize);
             }
         }
 
@@ -38,7 +39,9 @@ namespace Denxorz.ZoomControl
         {
             var child = Content as UIElement;
             if (child == null)
+            {
                 return arrangeBounds;
+            }
 
             ContentSize = child.DesiredSize;
             child.Arrange(new Rect(child.DesiredSize));

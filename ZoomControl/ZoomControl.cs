@@ -11,7 +11,6 @@ namespace Denxorz.ZoomControl
     /// https://github.com/andypelzer/GraphSharp/blob/master/Graph%23.Controls
     /// https://wpfextensions.codeplex.com/
     /// </summary>
-
     [TemplatePart(Name = PartPresenter, Type = typeof(ZoomContentPresenter))]
     public class ZoomControl : ContentControl
     {
@@ -19,7 +18,7 @@ namespace Denxorz.ZoomControl
 
         public static readonly DependencyProperty AnimationLengthProperty =
             DependencyProperty.Register("AnimationLength", typeof(TimeSpan), typeof(ZoomControl),
-                                        new UIPropertyMetadata(TimeSpan.FromMilliseconds(500)));
+                new UIPropertyMetadata(TimeSpan.FromMilliseconds(500)));
 
         public static readonly DependencyProperty MaxZoomProperty =
             DependencyProperty.Register("MaxZoom", typeof(double), typeof(ZoomControl), new UIPropertyMetadata(100.0));
@@ -52,7 +51,7 @@ namespace Denxorz.ZoomControl
 
         public static readonly DependencyProperty ModifierModeProperty =
             DependencyProperty.Register("ModifierMode", typeof(ZoomViewModifierMode), typeof(ZoomControl),
-                                        new UIPropertyMetadata(ZoomViewModifierMode.None));
+                new UIPropertyMetadata(ZoomViewModifierMode.None));
 
         public static readonly DependencyProperty TranslateXProperty =
             DependencyProperty.Register("TranslateX", typeof(double), typeof(ZoomControl),
@@ -66,19 +65,19 @@ namespace Denxorz.ZoomControl
             DependencyProperty.Register("Zoom", typeof(double), typeof(ZoomControl),
                                         new UIPropertyMetadata(1.0, ZoomPropertyChanged));
 
-        private Point _mouseDownPos;
-        private ZoomContentPresenter _presenter;
+        private Point mouseDownPosition;
+        private ZoomContentPresenter presenter;
 
         /// <summary>Applied to the presenter.</summary>
-        private ScaleTransform _scaleTransform;
-        private Vector _startTranslate;
-        private TransformGroup _transformGroup;
+        private ScaleTransform scaleTransform;
+        private Vector startTranslate;
+        private TransformGroup transformGroup;
 
         /// <summary>Applied to the scrollviewer.</summary>
-        private TranslateTransform _translateTransform;
+        private TranslateTransform translateTransform;
 
-        private int _zoomAnimCount;
-        private bool _isZooming;
+        private int zoomAnimCount;
+        private bool isZooming;
 
         static ZoomControl()
         {
@@ -95,7 +94,7 @@ namespace Denxorz.ZoomControl
 
         public double TranslateX
         {
-            get { return (double)GetValue(TranslateXProperty); }
+            get => (double)GetValue(TranslateXProperty);
             set
             {
                 BeginAnimation(TranslateXProperty, null);
@@ -105,7 +104,7 @@ namespace Denxorz.ZoomControl
 
         public double TranslateY
         {
-            get { return (double)GetValue(TranslateYProperty); }
+            get => (double)GetValue(TranslateYProperty);
             set
             {
                 BeginAnimation(TranslateYProperty, null);
@@ -115,25 +114,25 @@ namespace Denxorz.ZoomControl
 
         public TimeSpan AnimationLength
         {
-            get { return (TimeSpan)GetValue(AnimationLengthProperty); }
-            set { SetValue(AnimationLengthProperty, value); }
+            get => (TimeSpan)GetValue(AnimationLengthProperty);
+            set => SetValue(AnimationLengthProperty, value);
         }
 
         public double MinZoom
         {
-            get { return (double)GetValue(MinZoomProperty); }
-            set { SetValue(MinZoomProperty, value); }
+            get => (double)GetValue(MinZoomProperty);
+            set => SetValue(MinZoomProperty, value);
         }
 
         public double MaxZoom
         {
-            get { return (double)GetValue(MaxZoomProperty); }
-            set { SetValue(MaxZoomProperty, value); }
+            get => (double)GetValue(MaxZoomProperty);
+            set => SetValue(MaxZoomProperty, value);
         }
 
         public double Zoom
         {
-            get { return (double)GetValue(ZoomProperty); }
+            get => (double)GetValue(ZoomProperty);
             set
             {
                 if (value == (double)GetValue(ZoomProperty))
@@ -145,54 +144,56 @@ namespace Denxorz.ZoomControl
 
         private ZoomContentPresenter Presenter
         {
-            get { return _presenter; }
+            get => presenter;
             set
             {
-                _presenter = value;
-                if (_presenter == null)
+                presenter = value;
+                if (presenter == null)
                     return;
 
                 //add the ScaleTransform to the presenter
-                _transformGroup = new TransformGroup();
-                _scaleTransform = new ScaleTransform();
-                _translateTransform = new TranslateTransform();
-                _transformGroup.Children.Add(_scaleTransform);
-                _transformGroup.Children.Add(_translateTransform);
-                _presenter.RenderTransform = _transformGroup;
-                _presenter.RenderTransformOrigin = new Point(0.5, 0.5);
+                transformGroup = new TransformGroup();
+                scaleTransform = new ScaleTransform();
+                translateTransform = new TranslateTransform();
+                transformGroup.Children.Add(scaleTransform);
+                transformGroup.Children.Add(translateTransform);
+                presenter.RenderTransform = transformGroup;
+                presenter.RenderTransformOrigin = new Point(0.5, 0.5);
             }
         }
 
         /// <summary>Gets or sets the active modifier mode.</summary>
         public ZoomViewModifierMode ModifierMode
         {
-            get { return (ZoomViewModifierMode)GetValue(ModifierModeProperty); }
-            set { SetValue(ModifierModeProperty, value); }
+            get => (ZoomViewModifierMode)GetValue(ModifierModeProperty);
+            set => SetValue(ModifierModeProperty, value);
         }
 
         /// <summary>Gets or sets the mode of the zoom control.</summary>
         public ZoomControlModes Mode
         {
-            get { return (ZoomControlModes)GetValue(ModeProperty); }
-            set { SetValue(ModeProperty, value); }
+            get => (ZoomControlModes)GetValue(ModeProperty);
+            set => SetValue(ModeProperty, value);
         }
 
         private static object TranslateXCoerce(DependencyObject d, object basevalue)
         {
             var zc = (ZoomControl)d;
-            return zc._presenter == null ? 0.0 : (double)basevalue;
+            return zc.presenter == null ? 0.0 : (double)basevalue;
         }
 
         private static object TranslateYCoerce(DependencyObject d, object basevalue)
         {
             var zc = (ZoomControl)d;
-            return zc._presenter == null ? 0.0 : (double)basevalue;
+            return zc.presenter == null ? 0.0 : (double)basevalue;
         }
 
         private void ZoomControlMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (ModifierMode != ZoomViewModifierMode.Pan)
+            {
                 return;
+            }
 
             ModifierMode = ZoomViewModifierMode.None;
             PreviewMouseMove -= ZoomControlPreviewMouseMove;
@@ -202,9 +203,11 @@ namespace Denxorz.ZoomControl
         private void ZoomControlPreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (ModifierMode != ZoomViewModifierMode.Pan)
+            {
                 return;
+            }
 
-            var translate = _startTranslate + (e.GetPosition(this) - _mouseDownPos);
+            var translate = startTranslate + (e.GetPosition(this) - mouseDownPosition);
             TranslateX = translate.X;
             TranslateY = translate.Y;
         }
@@ -212,7 +215,9 @@ namespace Denxorz.ZoomControl
         private void OnMouseDown(MouseButtonEventArgs e, bool isPreview)
         {
             if (ModifierMode != ZoomViewModifierMode.None)
+            {
                 return;
+            }
 
             switch (Keyboard.Modifiers)
             {
@@ -232,10 +237,12 @@ namespace Denxorz.ZoomControl
             }
 
             if (ModifierMode == ZoomViewModifierMode.None)
+            {
                 return;
+            }
 
-            _mouseDownPos = e.GetPosition(this);
-            _startTranslate = new Vector(TranslateX, TranslateY);
+            mouseDownPosition = e.GetPosition(this);
+            startTranslate = new Vector(TranslateX, TranslateY);
             Mouse.Capture(this);
             PreviewMouseMove += ZoomControlPreviewMouseMove;
         }
@@ -243,34 +250,46 @@ namespace Denxorz.ZoomControl
         private static void TranslateXPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var zc = (ZoomControl)d;
-            if (zc._translateTransform == null)
+            if (zc.translateTransform == null)
+            {
                 return;
-            zc._translateTransform.X = (double)e.NewValue;
-            if (!zc._isZooming)
+            }
+
+            zc.translateTransform.X = (double)e.NewValue;
+            if (!zc.isZooming)
+            {
                 zc.Mode = ZoomControlModes.Custom;
+            }
         }
 
         private static void TranslateYPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var zc = (ZoomControl)d;
-            if (zc._translateTransform == null)
+            if (zc.translateTransform == null)
+            {
                 return;
-            zc._translateTransform.Y = (double)e.NewValue;
-            if (!zc._isZooming)
+            }
+
+            zc.translateTransform.Y = (double)e.NewValue;
+            if (!zc.isZooming)
+            {
                 zc.Mode = ZoomControlModes.Custom;
+            }
         }
 
         private static void ZoomPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var zc = (ZoomControl)d;
 
-            if (zc._scaleTransform == null)
+            if (zc.scaleTransform == null)
+            {
                 return;
+            }
 
             var zoom = (double)e.NewValue;
-            zc._scaleTransform.ScaleX = zoom;
-            zc._scaleTransform.ScaleY = zoom;
-            if (!zc._isZooming)
+            zc.scaleTransform.ScaleX = zoom;
+            zc.scaleTransform.ScaleY = zoom;
+            if (!zc.isZooming)
             {
                 double delta = (double)e.NewValue / (double)e.OldValue;
                 zc.TranslateX *= delta;
@@ -304,8 +323,8 @@ namespace Denxorz.ZoomControl
             var zoomedTargetPointPos = targetPoint * currentZoom + startTranslate;
             var endTranslate = vTarget - zoomedTargetPointPos;
 
-            double transformX = _presenter == null ? 0.0 : TranslateX + endTranslate.X;
-            double transformY = _presenter == null ? 0.0 : TranslateY + endTranslate.Y;
+            double transformX = presenter == null ? 0.0 : TranslateX + endTranslate.X;
+            double transformY = presenter == null ? 0.0 : TranslateY + endTranslate.Y;
 
             DoZoomAnimation(currentZoom, transformX, transformY);
             Mode = ZoomControlModes.Custom;
@@ -313,7 +332,7 @@ namespace Denxorz.ZoomControl
 
         private void DoZoomAnimation(double targetZoom, double transformX, double transformY)
         {
-            _isZooming = true;
+            isZooming = true;
             var duration = new Duration(AnimationLength);
             StartAnimation(TranslateXProperty, transformX, duration);
             StartAnimation(TranslateYProperty, transformY, duration);
@@ -325,7 +344,9 @@ namespace Denxorz.ZoomControl
             if (double.IsNaN(toValue) || double.IsInfinity(toValue))
             {
                 if (dp == ZoomProperty)
-                    _isZooming = false;
+                {
+                    isZooming = false;
+                }
 
                 return;
             }
@@ -333,17 +354,19 @@ namespace Denxorz.ZoomControl
             var animation = new DoubleAnimation(toValue, duration);
             if (dp == ZoomProperty)
             {
-                _zoomAnimCount++;
+                zoomAnimCount++;
                 animation.Completed += (s, args) =>
                 {
-                    _zoomAnimCount--;
-                    if (_zoomAnimCount > 0)
+                    zoomAnimCount--;
+                    if (zoomAnimCount > 0)
+                    {
                         return;
+                    }
 
                     var zoom = Zoom;
                     BeginAnimation(ZoomProperty, null);
                     SetValue(ZoomProperty, zoom);
-                    _isZooming = false;
+                    isZooming = false;
                 };
             }
             BeginAnimation(dp, animation, HandoffBehavior.Compose);
@@ -351,8 +374,10 @@ namespace Denxorz.ZoomControl
 
         private void DoZoomToOriginal()
         {
-            if (_presenter == null)
+            if (presenter == null)
+            {
                 return;
+            }
 
             var initialTranslate = GetInitialTranslate();
             DoZoomAnimation(1.0, initialTranslate.X, initialTranslate.Y);
@@ -360,11 +385,13 @@ namespace Denxorz.ZoomControl
 
         private Vector GetInitialTranslate()
         {
-            if (_presenter == null)
+            if (presenter == null)
+            {
                 return new Vector(0.0, 0.0);
+            }
 
-            var tX = -(_presenter.ContentSize.Width - _presenter.DesiredSize.Width) / 2.0;
-            var tY = -(_presenter.ContentSize.Height - _presenter.DesiredSize.Height) / 2.0;
+            var tX = -(presenter.ContentSize.Width - presenter.DesiredSize.Width) / 2.0;
+            var tY = -(presenter.ContentSize.Height - presenter.DesiredSize.Height) / 2.0;
             return new Vector(tX, tY);
         }
 
@@ -375,10 +402,12 @@ namespace Denxorz.ZoomControl
 
         private void DoZoomToFill()
         {
-            if (_presenter == null || Mode != ZoomControlModes.Fill)
+            if (presenter == null || Mode != ZoomControlModes.Fill)
+            {
                 return;
+            }
 
-            var deltaZoom = Math.Min(ActualWidth / _presenter.ContentSize.Width, ActualHeight / _presenter.ContentSize.Height);
+            var deltaZoom = Math.Min(ActualWidth / presenter.ContentSize.Width, ActualHeight / presenter.ContentSize.Height);
             var initialTranslate = GetInitialTranslate();
             DoZoomAnimation(deltaZoom, initialTranslate.X * deltaZoom, initialTranslate.Y * deltaZoom);
         }
