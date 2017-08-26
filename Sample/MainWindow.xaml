@@ -1,0 +1,127 @@
+﻿<Window x:Class="Sample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:zoomControl="clr-namespace:Denxorz.ZoomControl;assembly=Dexnorz.ZoomControl"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    
+    <Window.Resources>
+        <zoomControl:EqualityToBooleanConverter x:Key="EqualityConverter" />
+    </Window.Resources>
+    
+    <Grid>
+        <zoomControl:ZoomControl>
+            <zoomControl:ZoomControl.Style>
+                <Style TargetType="{x:Type zoomControl:ZoomControl}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type zoomControl:ZoomControl}">
+                                <Grid>
+                                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                ClipToBounds="{TemplateBinding ClipToBounds}">
+                                        <zoomControl:ZoomContentPresenter x:Name="PART_Presenter" ClipToBounds="False" />
+                                    </Border>
+                                    <Border Padding="5" Margin="5"
+                                CornerRadius="5"
+                                Background="#88C0C0C0"
+                                Width="275"
+                                Height="40"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Left">
+                                        <StackPanel Orientation="Horizontal">
+                                            <ToggleButton Content="1:1" Width="55"
+                                              IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent},Path=Mode,Converter={StaticResource EqualityConverter},ConverterParameter={x:Static zoomControl:ZoomControlModes.Original}}" />
+                                            <ToggleButton Content="Fill" Width="55"
+                                              IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent},Path=Mode,Converter={StaticResource EqualityConverter},ConverterParameter={x:Static zoomControl:ZoomControlModes.Fill}}" />
+                                            <ToggleButton Content="Custom" Width="55"
+                                              IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent},Path=Mode,Converter={StaticResource EqualityConverter},ConverterParameter={x:Static zoomControl:ZoomControlModes.Custom}}" />
+                                            <TextBlock
+                                    Text="{Binding RelativeSource={RelativeSource TemplatedParent},Path=Zoom,StringFormat='Zoom: {0:P2}'}"
+                                    VerticalAlignment="Center" Margin="5,0,0,0" />
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="ClipToBounds" Value="True" />
+
+                    <Style.Triggers>
+                        <Trigger Property="ModifierMode" Value="Pan">
+                            <Setter Property="Cursor" Value="SizeAll" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </zoomControl:ZoomControl.Style>
+            
+            <Grid Width="800"
+                              Height="700"
+                              Background="Beige">
+                <Canvas>
+                    <Rectangle Width="100"
+                                           Height="200"
+                                           Canvas.Left="102"
+                                           Canvas.Top="450"
+                                           Fill="Aqua" />
+                    <Rectangle Width="250"
+                                           Height="30"
+                                           Canvas.Left="122"
+                                           Canvas.Top="240"
+                                           Fill="Red" />
+                    <Rectangle Width="67"
+                                           Height="89"
+                                           Fill="Green"
+                                           Canvas.Left="463"
+                                           Canvas.Top="227" />
+                    <Rectangle Width="10"
+                                           Height="5"
+                                           Fill="Orange"
+                                           Canvas.Left="283"
+                                           Canvas.Top="119" />
+                    <Rectangle Width="3"
+                                           Height="78"
+                                           Fill="Blue"
+                                           Canvas.Left="102"
+                                           Canvas.Top="101" />
+                    <Rectangle Canvas.Left="10"
+                                           Canvas.Top="10"
+                                           Fill="Green"
+                                           Height="89"
+                                           Width="67" />
+                    <Rectangle Canvas.Left="339"
+                                           Canvas.Top="159"
+                                           Fill="Green"
+                                           Height="89"
+                                           Width="67" />
+                    <Rectangle Canvas.Left="400"
+                                           Canvas.Top="52"
+                                           Fill="Green"
+                                           Height="89"
+                                           Width="67" />
+                    <Rectangle Canvas.Left="135"
+                                           Canvas.Top="28"
+                                           Fill="Orange"
+                                           Height="5"
+                                           Width="10" />
+                    <Rectangle Canvas.Left="67"
+                                           Canvas.Top="335.08"
+                                           Fill="Orange"
+                                           Height="5"
+                                           Width="10" />
+                    <Rectangle Canvas.Left="190"
+                                           Canvas.Top="296"
+                                           Fill="Orange"
+                                           Height="20"
+                                           Width="30" />
+                </Canvas>
+            </Grid>
+        </zoomControl:ZoomControl>
+    </Grid>
+</Window>
+
