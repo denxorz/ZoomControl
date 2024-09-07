@@ -7,7 +7,7 @@ namespace Denxorz.ZoomControl
     {
         public delegate void ContentSizeChangedHandler(object sender, Size newSize);
 
-        public event ContentSizeChangedHandler ContentSizeChanged;
+        public event ContentSizeChangedHandler? ContentSizeChanged;
 
         private Size contentSize;
 

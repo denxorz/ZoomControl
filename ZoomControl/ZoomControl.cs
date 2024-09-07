@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -66,15 +65,15 @@ namespace Denxorz.ZoomControl
                                         new UIPropertyMetadata(1.0, ZoomPropertyChanged));
 
         private Point mouseDownPosition;
-        private ZoomContentPresenter presenter;
+        private ZoomContentPresenter? presenter;
 
         /// <summary>Applied to the presenter.</summary>
-        private ScaleTransform scaleTransform;
+        private ScaleTransform? scaleTransform;
         private Vector startTranslate;
-        private TransformGroup transformGroup;
+        private TransformGroup? transformGroup;
 
         /// <summary>Applied to the scrollviewer.</summary>
-        private TranslateTransform translateTransform;
+        private TranslateTransform? translateTransform;
 
         private int zoomAnimCount;
         private bool isZooming;
@@ -142,7 +141,7 @@ namespace Denxorz.ZoomControl
             }
         }
 
-        private ZoomContentPresenter Presenter
+        private ZoomContentPresenter? Presenter
         {
             get => presenter;
             set

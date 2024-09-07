@@ -43,5 +43,6 @@ A sample project can be found here: https://github.com/denxorz/ZoomControl/tree/
 
 ## Versions & Release Notes
 
+version 1.2: Add Framework 4.8 and NET8 support
 version 1.1: Downgrade .NET Framework version from 4.6.1 to 4.5.2
 version 1.0: First version
