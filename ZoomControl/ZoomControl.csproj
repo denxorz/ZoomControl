@@ -1,19 +1,46 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net452;net48;net8.0-windows</TargetFrameworks>
+
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
     <OutputType>Library</OutputType>
     <RootNamespace>Denxorz.ZoomControl</RootNamespace>
     <AssemblyName>Denxorz.ZoomControl</AssemblyName>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <LangVersion>latest</LangVersion>
+
+    <PackageId>Denxorz.ZoomControl</PackageId>
+    <Company>Denxorz</Company>
+    <Authors>Dennis Geldhof</Authors>
+    <Copyright>Copyright © 2017-2024, Dennis Geldhof</Copyright>
+
+    <Product>ZoomControl</Product>
+    <Description>Control that allows to zoom WPF controls</Description>
+    <PackageTags>ZoomControl Denxorz WPF</PackageTags>
+
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/denxorz/ZoomControl</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/denxorz/ZoomControl</RepositoryUrl>
+    <PackageIcon>icons8-Zoom to Actual Size-32.png</PackageIcon>
+
+    <Title>ZoomControl</Title>
+    <PackageReadmeFile>README.md</PackageReadmeFile>    
   </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="..\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
+    <None Include="..\icons8-Zoom to Actual Size-32.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  
 </Project>
