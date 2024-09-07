@@ -1,8 +1,7 @@
-﻿namespace Denxorz.ZoomControl
+﻿namespace Denxorz.ZoomControl;
+
+public enum ZoomViewModifierMode
 {
-    public enum ZoomViewModifierMode
-    {
-        None,
-        Pan
-    }
+    None,
+    Pan
 }
