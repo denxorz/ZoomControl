@@ -1,6 +1,6 @@
 # ZoomControl
 
-[![Build Status](https://github.com/denxorz/ZoomControl/workflows/dotnet/badge.svg)](https://github.com/denxorz/ZoomControl/actions) [![Coverage Status](https://coveralls.io/repos/github/denxorz/ZoomControl/badge.svg?branch=master)](https://coveralls.io/github/denxorzZoomControl?branch=master) [![NuGet](https://buildstats.info/nuget/Denxorz.ZoomControl)](https://www.nuget.org/packages/Denxorz.ZoomControl/) [![License](http://img.shields.io/:license-mspl-blue.svg)](https://github.com/denxorz/ZoomControl/blob/master/LICENSE)
+[![Build Status](https://github.com/denxorz/ZoomControl/workflows/dotnet-desktop/badge.svg)](https://github.com/denxorz/ZoomControl/actions) [![Coverage Status](https://coveralls.io/repos/github/denxorz/ZoomControl/badge.svg?branch=master)](https://coveralls.io/github/denxorzZoomControl?branch=master) [![NuGet](https://buildstats.info/nuget/Denxorz.ZoomControl)](https://www.nuget.org/packages/Denxorz.ZoomControl/) [![License](http://img.shields.io/:license-mspl-blue.svg)](https://github.com/denxorz/ZoomControl/blob/master/LICENSE)
 
 ## What does it do?
 ZoomControl is used as a WPF Viewbox with zoom abilities.
@@ -41,8 +41,10 @@ A sample project can be found here: https://github.com/denxorz/ZoomControl/tree/
 * [NuGet](https://www.nuget.org/)
 * [GitHub](https://github.com/)
 
-## Versions & Release Notes
+## Thanks to 
+* [MauNguyenVan](https://github.com/MauNguyenVan) for contributing
 
-version 1.2: Add Framework 4.8 and NET8 support
-version 1.1: Downgrade .NET Framework version from 4.6.1 to 4.5.2
-version 1.0: First version
+## Versions & Release Notes
+* version 1.2: Add Framework 4.8 and NET8 support
+* version 1.1: Downgrade .NET Framework version from 4.6.1 to 4.5.2
+* version 1.0: First version
