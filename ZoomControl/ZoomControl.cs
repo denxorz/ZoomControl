@@ -317,13 +317,20 @@ public class ZoomControl : ContentControl
     {
         e.Handled = true;
         Point mousePosition = e.GetPosition(this);
-        var deltaZoom = Math.Max(0.2, Math.Min(2.0, e.Delta / 300.0 + 1));
+        double deltaZoom = Math.Max(0.2, Math.Min(2.0, e.Delta / 300.0 + 1));
         ZoomToPosition(mousePosition, deltaZoom);
     }
-    private void ZoomToPosition(Point position, double deltaZoom)
+    public void ZoomToPosition(Point position, double deltaZoom)
     {
         var origoPosition = new Point(ActualWidth / 2, ActualHeight / 2);
         DoZoom(deltaZoom, origoPosition, position, position);
+    }
+    public void ZoomToRect(Rect viewBox)
+    {
+        var origoPosition = new Point(ActualWidth / 2, ActualHeight / 2);
+        double deltaZoom = Math.Min(ActualWidth / viewBox.Width, ActualHeight / viewBox.Height);
+        Point position = viewBox.Location + 0.5 * (Vector)viewBox.Size;
+        DoZoom(deltaZoom, origoPosition, position, origoPosition);
     }
     private void DoZoom(double deltaZoom, Point origoPosition, Point startHandlePosition, Point targetHandlePosition)
     {
