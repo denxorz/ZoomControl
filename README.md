@@ -1,6 +1,6 @@
 # ZoomControl
 
-[![Build Status](https://github.com/denxorz/ZoomControl/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/denxorz/ZoomControl/actions/workflows/dotnet-desktop.yml) [![Coverage Status](https://coveralls.io/repos/github/denxorz/ZoomControl/badge.svg?branch=master)](https://coveralls.io/github/denxorzZoomControl?branch=master) ![NuGet](https://img.shields.io/nuget/dt/Denxorz.ZoomControl) [![License](http://img.shields.io/:license-mspl-blue.svg)](https://github.com/denxorz/ZoomControl/blob/master/LICENSE)
+[![Build Status](https://github.com/denxorz/ZoomControl/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/denxorz/ZoomControl/actions/workflows/dotnet-desktop.yml)  [![NuGet](https://img.shields.io/nuget/dt/Denxorz.ZoomControl)](https://www.nuget.org/packages/Denxorz.ZoomControl) [![License](http://img.shields.io/:license-mspl-blue.svg)](https://github.com/denxorz/ZoomControl/blob/master/LICENSE)
 
 ## What does it do?
 ZoomControl is used as a WPF Viewbox with zoom abilities.
