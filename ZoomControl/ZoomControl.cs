@@ -77,6 +77,7 @@ public class ZoomControl : ContentControl
 
     private int zoomAnimCount;
     private bool isZooming;
+    private double tempMovingLength;
 
     static ZoomControl()
     {
@@ -86,8 +87,7 @@ public class ZoomControl : ContentControl
     public ZoomControl()
     {
         PreviewMouseWheel += ZoomControlMouseWheel;
-        PreviewMouseDown += (sender, e) => OnMouseDown(e, true);
-        MouseDown += (sender, e) => OnMouseDown(e, false);
+        MouseDown += OnMouseDown;
         MouseUp += ZoomControlMouseUp;
     }
 
@@ -189,7 +189,7 @@ public class ZoomControl : ContentControl
 
     private void ZoomControlMouseUp(object sender, MouseButtonEventArgs e)
     {
-        if (ModifierMode != ZoomViewModifierMode.Pan)
+        if (ModifierMode == ZoomViewModifierMode.None)
         {
             return;
         }
@@ -201,40 +201,57 @@ public class ZoomControl : ContentControl
 
     private void ZoomControlPreviewMouseMove(object sender, MouseEventArgs e)
     {
-        if (ModifierMode != ZoomViewModifierMode.Pan)
+        switch (ModifierMode)
         {
-            return;
+            case ZoomViewModifierMode.Pan:
+                var translate = startTranslate + (e.GetPosition(this) - mouseDownPosition);
+                TranslateX = translate.X;
+                TranslateY = translate.Y;
+                break;
+            case ZoomViewModifierMode.Zoom:
+                Point mousePosition = e.GetPosition(this);
+                var moveLength = (mousePosition - mouseDownPosition).Length;
+                var deltaZoom = moveLength > tempMovingLength ? 1.1 : 1 / 1.1;
+                ZoomToPosition(mouseDownPosition, deltaZoom);
+                tempMovingLength = moveLength;
+                break;
+            case ZoomViewModifierMode.None:
+                break;
+             default:
+                break;
         }
-
-        var translate = startTranslate + (e.GetPosition(this) - mouseDownPosition);
-        TranslateX = translate.X;
-        TranslateY = translate.Y;
     }
 
-    private void OnMouseDown(MouseButtonEventArgs e, bool isPreview)
+    private void OnMouseDown(object sender, MouseButtonEventArgs e)
     {
         if (ModifierMode != ZoomViewModifierMode.None)
         {
             return;
         }
-
-        switch (Keyboard.Modifiers)
+        switch (e.ChangedButton)
         {
-            case ModifierKeys.None:
-                if (!isPreview)
+            //case MouseButton.Left:
+            //    switch (Keyboard.Modifiers)
+            //    {
+            //        case ModifierKeys.Control:
+            //            ModifierMode = ZoomViewModifierMode.Zoom;
+            //            break;
+            //        case ModifierKeys.Shift:
+            //            ModifierMode = ZoomViewModifierMode.Pan;
+            //            break;
+            //        default:
+            //            return;
+            //    }
+            //    break;
+            case MouseButton.Middle:
+                if (e.ClickCount > 1)
+                    ZoomToFill();
+                else
                     ModifierMode = ZoomViewModifierMode.Pan;
                 break;
-            case ModifierKeys.Control:
-                break;
-            case ModifierKeys.Shift:
-                ModifierMode = ZoomViewModifierMode.Pan;
-                break;
-            case ModifierKeys.Windows:
-                break;
             default:
-                return;
+                break;
         }
-
         if (ModifierMode == ZoomViewModifierMode.None)
         {
             return;
@@ -245,7 +262,6 @@ public class ZoomControl : ContentControl
         Mouse.Capture(this);
         PreviewMouseMove += ZoomControlPreviewMouseMove;
     }
-
     private static void TranslateXPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var zc = (ZoomControl)d;
@@ -300,13 +316,15 @@ public class ZoomControl : ContentControl
     private void ZoomControlMouseWheel(object sender, MouseWheelEventArgs e)
     {
         e.Handled = true;
-        var origoPosition = new Point(ActualWidth / 2, ActualHeight / 2);
         Point mousePosition = e.GetPosition(this);
-
         var deltaZoom = Math.Max(0.2, Math.Min(2.0, e.Delta / 300.0 + 1));
-        DoZoom(deltaZoom, origoPosition, mousePosition, mousePosition);
+        ZoomToPosition(mousePosition, deltaZoom);
     }
-
+    private void ZoomToPosition(Point position, double deltaZoom)
+    {
+        var origoPosition = new Point(ActualWidth / 2, ActualHeight / 2);
+        DoZoom(deltaZoom, origoPosition, position, position);
+    }
     private void DoZoom(double deltaZoom, Point origoPosition, Point startHandlePosition, Point targetHandlePosition)
     {
         double startZoom = Zoom;

@@ -56,6 +56,9 @@
             <Trigger Property="ModifierMode" Value="Pan">
                 <Setter Property="Cursor" Value="SizeAll" />
             </Trigger>
+            <Trigger Property="ModifierMode" Value="Zoom">
+                <Setter Property="Cursor" Value="SizeNWSE" />
+            </Trigger>
         </Style.Triggers>
     </Style>
 

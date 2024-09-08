@@ -3,5 +3,6 @@
 public enum ZoomViewModifierMode
 {
     None,
-    Pan
+    Zoom,
+    Pan,
 }
