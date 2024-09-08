@@ -15,8 +15,8 @@ public class ZoomControl : ContentControl
 {
     private const string PartPresenter = "PART_Presenter";
 
-    public static readonly DependencyProperty AnimationLengthProperty =
-        DependencyProperty.Register("AnimationLength", typeof(TimeSpan), typeof(ZoomControl),
+    public static readonly DependencyProperty AnimationDurationProperty =
+        DependencyProperty.Register("AnimationDuration", typeof(TimeSpan), typeof(ZoomControl),
             new UIPropertyMetadata(TimeSpan.FromMilliseconds(500)));
 
     public static readonly DependencyProperty MaxZoomProperty =
@@ -111,10 +111,10 @@ public class ZoomControl : ContentControl
         }
     }
 
-    public TimeSpan AnimationLength
+    public TimeSpan AnimationDuration
     {
-        get => (TimeSpan)GetValue(AnimationLengthProperty);
-        set => SetValue(AnimationLengthProperty, value);
+        get => (TimeSpan)GetValue(AnimationDurationProperty);
+        set => SetValue(AnimationDurationProperty, value);
     }
 
     public double MinZoom
@@ -332,7 +332,7 @@ public class ZoomControl : ContentControl
     private void DoZoomAnimation(double targetZoom, double transformX, double transformY)
     {
         isZooming = true;
-        var duration = new Duration(AnimationLength);
+        var duration = new Duration(AnimationDuration);
         StartAnimation(TranslateXProperty, transformX, duration);
         StartAnimation(TranslateYProperty, transformY, duration);
         StartAnimation(ZoomProperty, targetZoom, duration);
